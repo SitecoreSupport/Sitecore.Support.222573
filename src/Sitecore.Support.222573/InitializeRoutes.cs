@@ -16,6 +16,23 @@ namespace Sitecore.Support.ExperienceForms.Mvc.Pipelines.Initialize
       },
       new[] { "Sitecore.Support.ExperienceForms.Mvc.Controllers" }
       );
+
+      routes.MapRoute("FormBuilder", "formbuilder/{action}/{id}", new
+      {
+        controller = "FormBuilder",
+        action = "Index",        
+        id = UrlParameter.Optional
+      },
+      new[] { "Sitecore.ExperienceForms.Mvc.Controllers" }
+      );
+      routes.MapRoute("FieldTracking", "fieldtracking/{action}", new
+      {
+        controller = "FieldTracking",
+        action = "Register"
+      },
+      new[] { "Sitecore.ExperienceForms.Mvc.Controllers" }
+      );
+
     }
   }
 }
