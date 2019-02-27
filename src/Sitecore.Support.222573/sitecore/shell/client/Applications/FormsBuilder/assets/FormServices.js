@@ -1,27 +1,30 @@
 ﻿(function (speak) {
-    define(["jquery"], function ($) {
+    define(["jquery"],
+        function ($) {
             var formServices = {
                 paths: {
-                    loadForm: "/sitecore/shell/formbuilder/shellload",//fix 222573
+                    loadForm: "/formbuilder/load",
                     renderField: "/sitecore/api/forms/client/formfield/renderfield",
                     reloadField: "/sitecore/api/forms/client/formfield/reloadfield",
                     reloadDatasource: "/sitecore/api/forms/client/formfield/reloaddatasource",
                     reloadListItems: "/sitecore/api/forms/client/formfield/reloadlistitems",
                     saveForm: "/sitecore/api/ssc/forms/formdesign/formdesign/save",
                     renameForm: "/sitecore/api/ssc/forms/formdesign/formdesign/rename",
+                    removeVersion: "/sitecore/api/ssc/forms/formdesign/formdesign/removeVersion",
                     deleteForms: "/sitecore/api/ssc/forms/formdesign/formdesign/delete",
                     getFormDetails: "/sitecore/api/ssc/forms/formdesign/formdesign/details",
                     getSubmitActions: "/sitecore/api/ssc/forms/submitactions/submitactions",
                     getSubmitActionDefinition: "/sitecore/api/ssc/forms/submitactions/submitactions/definition",
                     getFormStatistics: "/sitecore/api/ssc/forms/reports/reports/formstatistics",
                     getFieldStatistics: "/sitecore/api/ssc/forms/reports/reports/fieldstatistics",
+                    getLanguages: "/sitecore/api/ssc/forms/formdesign/formdesign/languages",
                     createGoal: "/-/item/v1/sitecore/shell"
                 },
 
                 addCsrfToken: function (options) {
                     var csrfToken = speak.utils.security.antiForgery.getAntiForgeryToken();
 
-                    options.beforeSend = function(request) {
+                    options.beforeSend = function (request) {
                         request.setRequestHeader(csrfToken.headerKey, csrfToken.value);
                     };
                 },
@@ -74,6 +77,24 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         data: JSON.stringify(newName)
+                    };
+                    this.addCsrfToken(ajaxOptions);
+
+                    return $.ajax(url, ajaxOptions);
+                },
+
+                removeVersion: function (id, language) {
+                    var options = {
+                        formId: id,
+                        sc_formmode: "delete",
+                        sc_formlang: language
+                    },
+                        url = speak.Helpers.url.addQueryParameters(this.paths.removeVersion, options);
+
+                    var ajaxOptions = {
+                        type: "DELETE",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json"
                     };
                     this.addCsrfToken(ajaxOptions);
 
@@ -134,10 +155,12 @@
                 },
 
                 reloadDatasource: function (dataOptions, language) {
-                    var options = $.extend(true, {
-                        sc_formmode: "edit",
-                        sc_formlang: language
-                    }, dataOptions),
+                    var options = $.extend(true,
+                            {
+                                sc_formmode: "edit",
+                                sc_formlang: language
+                            },
+                            dataOptions),
                         url = speak.Helpers.url.addQueryParameters(this.paths.reloadDatasource, options);
 
                     var ajaxOptions = {
@@ -151,10 +174,12 @@
                 },
 
                 reloadListItems: function (dataOptions, language) {
-                    var options = $.extend(true, {
+                    var options = $.extend(true,
+                            {
                                 sc_formmode: "edit",
                                 sc_formlang: language
-                            }, dataOptions),
+                            },
+                            dataOptions),
                         url = speak.Helpers.url.addQueryParameters(this.paths.reloadListItems, options);
 
                     var ajaxOptions = {
@@ -186,10 +211,12 @@
                 },
 
                 getSubmitActionDefinition: function (dataOptions) {
-                    var options = $.extend(true, {
+                    var options = $.extend(true,
+                            {
                                 sc_formmode: "edit",
                                 sc_formlang: speak.Context.current().language
-                            }, dataOptions),
+                            },
+                            dataOptions),
                         url = speak.Helpers.url.addQueryParameters(this.paths.getSubmitActionDefinition, options);
 
                     var ajaxOptions = {
@@ -268,19 +295,39 @@
                     return $.ajax(url, ajaxOptions);
                 },
 
-                createGoal: function (baseOptions, fields) {
-                    var goal = $.extend(true, baseOptions.Fields || {}, {
-                        Name: fields.GoalLabel,
-                        Points: fields.EngagementValue,
-                        Description: fields.Description
-                    }),
-                    options = {
-                        sc_itemid: baseOptions.ParentId,
-                        sc_database: baseOptions.Database,
-                        template: baseOptions.TemplateId,
-                        name: fields.GoalLabel
+                getLanguages: function () {
+                    var options = {
+                        sc_formmode: "edit"
                     },
-                    url = speak.Helpers.url.addQueryParameters(this.paths.createGoal, options);
+                        url = speak.Helpers.url.addQueryParameters(this.paths.getLanguages, options);
+
+                    var ajaxOptions = {
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        type: "GET",
+                        cache: false
+                    };
+
+                    this.addCsrfToken(ajaxOptions);
+
+                    return $.ajax(url, ajaxOptions);
+                },
+
+                createGoal: function (baseOptions, fields) {
+                    var goal = $.extend(true,
+                            baseOptions.Fields || {},
+                            {
+                                Name: fields.GoalLabel,
+                                Points: fields.EngagementValue,
+                                Description: fields.Description
+                            }),
+                        options = {
+                            sc_itemid: baseOptions.ParentId,
+                            sc_database: baseOptions.Database,
+                            template: baseOptions.TemplateId,
+                            name: fields.GoalLabel
+                        },
+                        url = speak.Helpers.url.addQueryParameters(this.paths.createGoal, options);
 
                     var ajaxOptions = {
                         type: "POST",
