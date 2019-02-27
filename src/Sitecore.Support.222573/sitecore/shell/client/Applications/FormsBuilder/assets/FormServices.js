@@ -3,7 +3,7 @@
         function ($) {
             var formServices = {
                 paths: {
-                    loadForm: "/formbuilder/load",
+                    loadForm: "/sitecore/shell/formbuilder/shellload",//fix 222573
                     renderField: "/sitecore/api/forms/client/formfield/renderfield",
                     reloadField: "/sitecore/api/forms/client/formfield/reloadfield",
                     reloadDatasource: "/sitecore/api/forms/client/formfield/reloaddatasource",
