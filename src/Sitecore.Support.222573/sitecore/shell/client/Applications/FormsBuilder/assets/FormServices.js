@@ -1,4 +1,5 @@
-﻿(function (speak) {
+﻿/* Sitecore.Support.222573 */
+(function (speak) {
     define(["jquery"], function ($) {
             var formServices = {
                 paths: {
@@ -30,7 +31,8 @@
                     var options = {
                         id: id || "",
                         sc_formmode: mode || "",
-                        sc_formlang: language
+                        sc_formlang: language,
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.loadForm, options);
 
@@ -46,7 +48,8 @@
                 saveForm: function (items, mode, language) {
                     var options = {
                         sc_formmode: mode,
-                        sc_formlang: language
+                        sc_formlang: language,
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.saveForm, options);
 
@@ -65,7 +68,8 @@
                 renameForm: function (id, newName) {
                     var options = {
                         formId: id,
-                        sc_formmode: "edit"
+                        sc_formmode: "edit",
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.renameForm, options);
 
@@ -82,7 +86,8 @@
 
                 deleteForms: function (itemIds) {
                     var options = {
-                        sc_formmode: "delete"
+                        sc_formmode: "delete",
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.deleteForms, options);
 
@@ -102,7 +107,8 @@
                         fieldTypeId: fieldType,
                         templateId: fieldTemplate,
                         sc_formmode: "new",
-                        sc_formlang: language
+                        sc_formlang: language,
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.renderField, options);
 
@@ -118,7 +124,8 @@
                 reloadField: function (fieldData, language) {
                     var options = {
                         sc_formmode: "edit",
-                        sc_formlang: language
+                        sc_formlang: language,
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.reloadField, options);
 
@@ -136,7 +143,8 @@
                 reloadDatasource: function (dataOptions, language) {
                     var options = $.extend(true, {
                         sc_formmode: "edit",
-                        sc_formlang: language
+                        sc_formlang: language,
+                        sc_site: "shell"
                     }, dataOptions),
                         url = speak.Helpers.url.addQueryParameters(this.paths.reloadDatasource, options);
 
@@ -153,7 +161,8 @@
                 reloadListItems: function (dataOptions, language) {
                     var options = $.extend(true, {
                                 sc_formmode: "edit",
-                                sc_formlang: language
+                                sc_formlang: language,
+                                sc_site: "shell"
                             }, dataOptions),
                         url = speak.Helpers.url.addQueryParameters(this.paths.reloadListItems, options);
 
@@ -170,7 +179,8 @@
                 getSubmitActions: function () {
                     var options = {
                         sc_formmode: "edit",
-                        sc_formlang: speak.Context.current().language
+                        sc_formlang: speak.Context.current().language,
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.getSubmitActions, options);
 
@@ -188,7 +198,8 @@
                 getSubmitActionDefinition: function (dataOptions) {
                     var options = $.extend(true, {
                                 sc_formmode: "edit",
-                                sc_formlang: speak.Context.current().language
+                                sc_formlang: speak.Context.current().language,
+                                sc_site: "shell"
                             }, dataOptions),
                         url = speak.Helpers.url.addQueryParameters(this.paths.getSubmitActionDefinition, options);
 
@@ -207,7 +218,8 @@
                     var options = {
                         formId: formId,
                         sc_formmode: "edit",
-                        sc_formlang: speak.Context.current().language
+                        sc_formlang: speak.Context.current().language,
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.getFormDetails, options);
 
@@ -230,7 +242,8 @@
                         endDate: endDate,
                         utcOffset: new Date().getTimezoneOffset(),
                         sc_formmode: "edit",
-                        sc_formlang: speak.Context.current().language
+                        sc_formlang: speak.Context.current().language,
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.getFormStatistics, options);
 
@@ -253,7 +266,8 @@
                         endDate: endDate,
                         utcOffset: new Date().getTimezoneOffset(),
                         sc_formmode: "edit",
-                        sc_formlang: speak.Context.current().language
+                        sc_formlang: speak.Context.current().language,
+                        sc_site: "shell"
                     },
                         url = speak.Helpers.url.addQueryParameters(this.paths.getFieldStatistics, options);
 
